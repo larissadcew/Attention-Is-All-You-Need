@@ -3,9 +3,6 @@
 This is a PyTorch implementation of the Transformer model in "[Attention is All You Need](https://arxiv.org/abs/1706.03762)" (Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin, arxiv, 2017). 
 
 
-A novel sequence to sequence framework utilizes the **self-attention mechanism**, instead of Convolution operation or Recurrent structure, and achieve the state-of-the-art performance on **WMT 2014 English-to-German translation task**. (2017/06/12)
-
-> The official Tensorflow Implementation can be found in: [tensorflow/tensor2tensor](https://github.com/tensorflow/tensor2tensor/blob/master/tensor2tensor/models/transformer.py).
 
 > To learn more about self-attention mechanism, you could read "[A Structured Self-attentive Sentence Embedding](https://arxiv.org/abs/1703.03130)".
 
@@ -30,30 +27,30 @@ If there is any suggestion or error, feel free to fire an issue to let me know. 
 
 An example of training for the WMT'16 Multimodal Translation task (http://www.statmt.org/wmt16/multimodal-task.html).
 
-### 0) Download the spacy language model.
+### Download the spacy language model.
 ```bash
 # conda install -c conda-forge spacy 
 python -m spacy download en
 python -m spacy download de
 ```
 
-### 1) Preprocess the data with torchtext and spacy.
+### Preprocess the data with torchtext and spacy.
 ```bash
 python preprocess.py -lang_src de -lang_trg en -share_vocab -save_data m30k_deen_shr.pkl
 ```
 
-### 2) Train the model
+### Train the model
 ```bash
 python train.py -data_pkl m30k_deen_shr.pkl -log m30k_deen_shr -embs_share_weight -proj_share_weight -label_smoothing -output_dir output -b 256 -warmup 128000 -epoch 400
 ```
 
-### 3) Test the model
+### Test the model
 ```bash
 python translate.py -data_pkl m30k_deen_shr.pkl -model trained.chkpt -output prediction.txt
 ```
 
 ## [(WIP)] WMT'17 Multimodal Translation: de-en w/ BPE 
-### 1) Download and preprocess the data with bpe:
+###Download and preprocess the data with bpe:
 
 > Since the interfaces is not unified, you need to switch the main function call from `main_wo_bpe` to `main`.
 
@@ -61,12 +58,12 @@ python translate.py -data_pkl m30k_deen_shr.pkl -model trained.chkpt -output pre
 python preprocess.py -raw_dir /tmp/raw_deen -data_dir ./bpe_deen -save_data bpe_vocab.pkl -codes codes.txt -prefix deen
 ```
 
-### 2) Train the model
+###Train the model
 ```bash
 python train.py -data_pkl ./bpe_deen/bpe_vocab.pkl -train_path ./bpe_deen/deen-train -val_path ./bpe_deen/deen-val -log deen_bpe -embs_share_weight -proj_share_weight -label_smoothing -output_dir output -b 256 -warmup 128000 -epoch 400
 ```
 
-### 3) Test the model (not ready)
+### Test the model (not ready)
 - TODO:
 	- Load vocabulary.
 	- Perform decoding after the translation.
